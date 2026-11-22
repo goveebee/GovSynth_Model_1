@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Emil Synth
 
 Classic analog-inspired polyphonic synthesizer VST3.
@@ -40,3 +41,7 @@ See AGENTS.md for full architecture.
 ## License
 
 See LICENSE
+=======
+# GovSynth_Model_1
+GovSynth Model 1 VST-instrument
+>>>>>>> origin/main

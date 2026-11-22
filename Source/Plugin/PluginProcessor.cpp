@@ -1,17 +1,26 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "../Parameters/ParameterIDs.h"
 
-EmilSynthAudioProcessor::EmilSynthAudioProcessor()
-    : AudioProcessor(BusesProperties().withOutput("Output", juce::AudioChannelSet::stereo(), true))
+GovSynthModel1AudioProcessor::GovSynthModel1AudioProcessor()
+    : AudioProcessor(BusesProperties().withOutput("Output", juce::AudioChannelSet::stereo(), true)),
+      apvts(*this, nullptr, "Parameters", ParameterLayout::createLayout())
 {
 }
 
-EmilSynthAudioProcessor::~EmilSynthAudioProcessor() {}
+GovSynthModel1AudioProcessor::~GovSynthModel1AudioProcessor() {}
 
-void EmilSynthAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock) {}
-void EmilSynthAudioProcessor::releaseResources() {}
+void GovSynthModel1AudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
+{
+    engine.prepareToPlay(sampleRate, samplesPerBlock);
+}
 
-bool EmilSynthAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
+void GovSynthModel1AudioProcessor::releaseResources()
+{
+    engine.releaseResources();
+}
+
+bool GovSynthModel1AudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const
 {
     if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
         && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
@@ -19,16 +28,47 @@ bool EmilSynthAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts)
     return true;
 }
 
-void EmilSynthAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
+void GovSynthModel1AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages)
 {
     juce::ScopedNoDenormals noDenormals;
-    for (int channel = 0; channel < buffer.getNumChannels(); ++channel)
-        buffer.clear(channel, 0, buffer.getNumSamples());
+    buffer.clear();
+
+    auto& params = apvts;
+    engine.setWaveform(static_cast<int>(params.getRawParameterValue(Params::OscWave)->load()));
+    engine.setOscLevel(params.getRawParameterValue(Params::OscLevel)->load());
+    engine.setAmpEnvelope(
+        params.getRawParameterValue(Params::AmpAttack)->load(),
+        params.getRawParameterValue(Params::AmpDecay)->load(),
+        params.getRawParameterValue(Params::AmpSustain)->load(),
+        params.getRawParameterValue(Params::AmpRelease)->load()
+    );
+
+    engine.processBlock(buffer, midiMessages);
+
+    float masterDb = params.getRawParameterValue(Params::MasterVolume)->load();
+    float masterGain = juce::Decibels::decibelsToGain(masterDb);
+    buffer.applyGain(masterGain);
 }
 
-juce::AudioProcessorEditor* EmilSynthAudioProcessor::createEditor()
+juce::AudioProcessorEditor* GovSynthModel1AudioProcessor::createEditor()
 {
-    return new EmilSynthAudioProcessorEditor(*this);
+    return new GovSynthModel1AudioProcessorEditor(*this);
 }
 
-juce::AudioProcessor* JUCE_CREATE_PLUGIN_FILTER(EmilSynthAudioProcessor)
+void GovSynthModel1AudioProcessor::getStateInformation(juce::MemoryBlock& destData)
+{
+    std::unique_ptr<juce::XmlElement> xml(apvts.copyState().createXml());
+    copyXmlToBinary(*xml, destData);
+}
+
+void GovSynthModel1AudioProcessor::setStateInformation(const void* data, int sizeInBytes)
+{
+    std::unique_ptr<juce::XmlElement> xmlState(getXmlFromBinary(data, sizeInBytes));
+    if (xmlState && xmlState->hasTagName(apvts.state.getType()))
+        apvts.replaceState(juce::ValueTree::fromXml(*xmlState));
+}
+
+juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()
+{
+    return new GovSynthModel1AudioProcessor();
+}

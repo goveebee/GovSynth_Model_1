@@ -10,6 +10,10 @@ include(cmake/Sanitizers.cmake)
 
 add_compile_definitions(JUCE_VST3_CAN_REPLACE_VST2=0)
 
+if(MSVC)
+    add_compile_options(/EHsc)
+endif()
+
 # JUCE
 set(JUCE_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(JUCE_BUILD_TEACHING_TOOLS OFF CACHE BOOL "" FORCE)
@@ -27,6 +31,10 @@ juce_add_plugin(GovSynthModel1
     PRODUCT_NAME "GovSynthModel1"
     COPY_PLUGIN_AFTER_BUILD TRUE
 )
+
+if(MSVC)
+    target_compile_options(GovSynthModel1 PRIVATE /EHsc)
+endif()
 
 target_sources(GovSynthModel1 PRIVATE
     Source/Plugin/PluginProcessor.cpp

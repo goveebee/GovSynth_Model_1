@@ -24,7 +24,7 @@ juce_add_plugin(GovSynthModel1
     PLUGIN_MANUFACTURER_CODE GovS
     PLUGIN_CODE GovM
     FORMATS VST3 Standalone
-    PRODUCT_NAME "GovSynth Model 1"
+    PRODUCT_NAME "GovSynthModel1"
     COPY_PLUGIN_AFTER_BUILD TRUE
 )
 

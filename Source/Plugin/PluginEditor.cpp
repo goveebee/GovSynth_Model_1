@@ -50,7 +50,7 @@ void GovSynthModel1AudioProcessorEditor::paint(juce::Graphics& g)
     g.fillAll(juce::Colours::darkgrey);
     g.setColour(juce::Colours::white);
     g.setFont(juce::Font(juce::FontOptions(24.0f)));
-    g.drawFittedText("GovSynth Model 1 - M1", getLocalBounds().withTrimmedTop(20), juce::Justification::centredTop, 1);
+    g.drawFittedText("GovSynthModel1 - M1", getLocalBounds().withTrimmedTop(20), juce::Justification::centredTop, 1);
 }
 
 void GovSynthModel1AudioProcessorEditor::resized()

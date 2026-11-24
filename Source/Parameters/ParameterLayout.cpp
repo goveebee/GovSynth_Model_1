@@ -8,9 +8,15 @@ juce::AudioProcessorValueTreeState::ParameterLayout ParameterLayout::createLayou
 
     params.push_back(std::make_unique<juce::AudioParameterChoice>(Params::Osc1Wave, "Osc 1 Wave", juce::StringArray{"Sine", "Triangle", "Saw", "Square"}, 2));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(Params::Osc1Level, "Osc 1 Level", juce::NormalisableRange<float>(0.0f, 1.0f, 0.001f), 0.8f));
+    params.push_back(std::make_unique<juce::AudioParameterInt>(Params::Osc1Octave, "Osc 1 Octave", -2, 2, 0));
+    params.push_back(std::make_unique<juce::AudioParameterInt>(Params::Osc1Semitone, "Osc 1 Semitone", -12, 12, 0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(Params::Osc1Detune, "Osc 1 Detune", juce::NormalisableRange<float>(-50.0f, 50.0f), 0.0f));
 
     params.push_back(std::make_unique<juce::AudioParameterChoice>(Params::Osc2Wave, "Osc 2 Wave", juce::StringArray{"Sine", "Triangle", "Saw", "Square"}, 2));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(Params::Osc2Level, "Osc 2 Level", juce::NormalisableRange<float>(0.0f, 1.0f, 0.001f), 0.6f));
+    params.push_back(std::make_unique<juce::AudioParameterInt>(Params::Osc2Octave, "Osc 2 Octave", -2, 2, 0));
+    params.push_back(std::make_unique<juce::AudioParameterInt>(Params::Osc2Semitone, "Osc 2 Semitone", -12, 12, 0));
+    params.push_back(std::make_unique<juce::AudioParameterFloat>(Params::Osc2Detune, "Osc 2 Detune", juce::NormalisableRange<float>(-50.0f, 50.0f), 5.0f));
 
     params.push_back(std::make_unique<juce::AudioParameterFloat>(Params::AmpAttack, "Amp Attack", juce::NormalisableRange<float>(0.001f, 5.0f, 0.001f, 0.3f), 0.01f));
     params.push_back(std::make_unique<juce::AudioParameterFloat>(Params::AmpDecay, "Amp Decay", juce::NormalisableRange<float>(0.001f, 5.0f, 0.001f, 0.3f), 0.3f));

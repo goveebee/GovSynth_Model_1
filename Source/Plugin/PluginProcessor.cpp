@@ -38,6 +38,12 @@ void GovSynthModel1AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer
     engine.setOsc2Waveform(static_cast<int>(params.getRawParameterValue(Params::Osc2Wave)->load()));
     engine.setOsc1Level(params.getRawParameterValue(Params::Osc1Level)->load());
     engine.setOsc2Level(params.getRawParameterValue(Params::Osc2Level)->load());
+    engine.setOsc1Octave(static_cast<int>(params.getRawParameterValue(Params::Osc1Octave)->load()));
+    engine.setOsc1Semitone(static_cast<int>(params.getRawParameterValue(Params::Osc1Semitone)->load()));
+    engine.setOsc1Detune(params.getRawParameterValue(Params::Osc1Detune)->load());
+    engine.setOsc2Octave(static_cast<int>(params.getRawParameterValue(Params::Osc2Octave)->load()));
+    engine.setOsc2Semitone(static_cast<int>(params.getRawParameterValue(Params::Osc2Semitone)->load()));
+    engine.setOsc2Detune(params.getRawParameterValue(Params::Osc2Detune)->load());
     engine.setAmpEnvelope(
         params.getRawParameterValue(Params::AmpAttack)->load(),
         params.getRawParameterValue(Params::AmpDecay)->load(),

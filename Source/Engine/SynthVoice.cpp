@@ -13,12 +13,19 @@ void SynthVoice::prepareToPlay(double sampleRate, int samplesPerBlock)
     env.prepare(sampleRate);
 }
 
+double SynthVoice::applyTuning(double baseFreq, int octave, int semitone, float cents) const
+{
+    double freq = baseFreq;
+    freq *= std::pow(2.0, octave + semitone / 12.0 + cents / 1200.0);
+    return freq;
+}
+
 void SynthVoice::startNote(int midiNoteNumber, float velocity, juce::SynthesiserSound* sound, int currentPitchWheelPosition)
 {
     (void)velocity; (void)sound; (void)currentPitchWheelPosition;
     currentFreq = juce::MidiMessage::getMidiNoteInHertz(midiNoteNumber);
-    osc1.setFrequency(currentFreq);
-    osc2.setFrequency(currentFreq * 1.01); // slight detune
+    osc1.setFrequency(applyTuning(currentFreq, osc1Octave, osc1Semitone, osc1Detune));
+    osc2.setFrequency(applyTuning(currentFreq, osc2Octave, osc2Semitone, osc2Detune));
     env.noteOn();
 }
 
@@ -83,6 +90,13 @@ void SynthVoice::setOsc2Level(float level)
 {
     osc2.setLevel(level);
 }
+
+void SynthVoice::setOsc1Octave(int o) { osc1Octave = o; }
+void SynthVoice::setOsc1Semitone(int s) { osc1Semitone = s; }
+void SynthVoice::setOsc1Detune(float cents) { osc1Detune = cents; }
+void SynthVoice::setOsc2Octave(int o) { osc2Octave = o; }
+void SynthVoice::setOsc2Semitone(int s) { osc2Semitone = s; }
+void SynthVoice::setOsc2Detune(float cents) { osc2Detune = cents; }
 
 void SynthVoice::setAmpEnvelope(float attack, float decay, float sustain, float release)
 {

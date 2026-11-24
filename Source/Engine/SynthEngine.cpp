@@ -60,6 +60,37 @@ void SynthEngine::setOsc2Level(float level)
     }
 }
 
+void SynthEngine::setOsc1Octave(int o)
+{
+    for (int i = 0; i < synth.getNumVoices(); ++i)
+        if (auto* v = dynamic_cast<SynthVoice*>(synth.getVoice(i))) v->setOsc1Octave(o);
+}
+void SynthEngine::setOsc1Semitone(int s)
+{
+    for (int i = 0; i < synth.getNumVoices(); ++i)
+        if (auto* v = dynamic_cast<SynthVoice*>(synth.getVoice(i))) v->setOsc1Semitone(s);
+}
+void SynthEngine::setOsc1Detune(float c)
+{
+    for (int i = 0; i < synth.getNumVoices(); ++i)
+        if (auto* v = dynamic_cast<SynthVoice*>(synth.getVoice(i))) v->setOsc1Detune(c);
+}
+void SynthEngine::setOsc2Octave(int o)
+{
+    for (int i = 0; i < synth.getNumVoices(); ++i)
+        if (auto* v = dynamic_cast<SynthVoice*>(synth.getVoice(i))) v->setOsc2Octave(o);
+}
+void SynthEngine::setOsc2Semitone(int s)
+{
+    for (int i = 0; i < synth.getNumVoices(); ++i)
+        if (auto* v = dynamic_cast<SynthVoice*>(synth.getVoice(i))) v->setOsc2Semitone(s);
+}
+void SynthEngine::setOsc2Detune(float c)
+{
+    for (int i = 0; i < synth.getNumVoices(); ++i)
+        if (auto* v = dynamic_cast<SynthVoice*>(synth.getVoice(i))) v->setOsc2Detune(c);
+}
+
 void SynthEngine::setAmpEnvelope(float attack, float decay, float sustain, float release)
 {
     for (int i = 0; i < synth.getNumVoices(); ++i)

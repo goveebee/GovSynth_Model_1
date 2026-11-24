@@ -17,6 +17,12 @@ public:
     void setOsc2Waveform(int index);
     void setOsc1Level(float level);
     void setOsc2Level(float level);
+    void setOsc1Octave(int o);
+    void setOsc1Semitone(int s);
+    void setOsc1Detune(float c);
+    void setOsc2Octave(int o);
+    void setOsc2Semitone(int s);
+    void setOsc2Detune(float c);
     void setAmpEnvelope(float attack, float decay, float sustain, float release);
 
 private:

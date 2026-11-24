@@ -109,9 +109,9 @@ void GovSynthModel1AudioProcessorEditor::resized()
     osc1WaveBox.setBounds(top.removeFromLeft(200));
     osc2WaveBox.setBounds(top.removeFromLeft(200));
 
-    auto row = area.removeFromTop(180);
+    auto row1 = area.removeFromTop(180);
     auto makeCol = [&](auto& slider, auto& label) {
-        auto col = row.removeFromLeft(110);
+        auto col = row1.removeFromLeft(110);
         auto labelArea = col.removeFromTop(20);
         label.setBounds(labelArea);
         slider.setBounds(col.reduced(0,20));
@@ -124,9 +124,17 @@ void GovSynthModel1AudioProcessorEditor::resized()
     makeCol(osc2OctaveSlider, osc2OctaveLabel);
     makeCol(osc2SemitoneSlider, osc2SemitoneLabel);
     makeCol(osc2DetuneSlider, osc2DetuneLabel);
-    makeCol(ampAttackSlider, ampAttackLabel);
-    makeCol(ampDecaySlider, ampDecayLabel);
-    makeCol(ampSustainSlider, ampSustainLabel);
-    makeCol(ampReleaseSlider, ampReleaseLabel);
-    makeCol(masterVolumeSlider, masterVolumeLabel);
+
+    auto row2 = area.removeFromTop(180);
+    auto makeCol2 = [&](auto& slider, auto& label) {
+        auto col = row2.removeFromLeft(110);
+        auto labelArea = col.removeFromTop(20);
+        label.setBounds(labelArea);
+        slider.setBounds(col.reduced(0,20));
+    };
+    makeCol2(ampAttackSlider, ampAttackLabel);
+    makeCol2(ampDecaySlider, ampDecayLabel);
+    makeCol2(ampSustainSlider, ampSustainLabel);
+    makeCol2(ampReleaseSlider, ampReleaseLabel);
+    makeCol2(masterVolumeSlider, masterVolumeLabel);
 }

@@ -13,8 +13,10 @@ public:
     void releaseResources();
     void processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffer& midiMessages);
 
-    void setWaveform(int index);
-    void setOscLevel(float level);
+    void setOsc1Waveform(int index);
+    void setOsc2Waveform(int index);
+    void setOsc1Level(float level);
+    void setOsc2Level(float level);
     void setAmpEnvelope(float attack, float decay, float sustain, float release);
 
 private:

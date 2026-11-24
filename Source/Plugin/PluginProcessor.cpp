@@ -34,8 +34,10 @@ void GovSynthModel1AudioProcessor::processBlock(juce::AudioBuffer<float>& buffer
     buffer.clear();
 
     auto& params = apvts;
-    engine.setWaveform(static_cast<int>(params.getRawParameterValue(Params::OscWave)->load()));
-    engine.setOscLevel(params.getRawParameterValue(Params::OscLevel)->load());
+    engine.setOsc1Waveform(static_cast<int>(params.getRawParameterValue(Params::Osc1Wave)->load()));
+    engine.setOsc2Waveform(static_cast<int>(params.getRawParameterValue(Params::Osc2Wave)->load()));
+    engine.setOsc1Level(params.getRawParameterValue(Params::Osc1Level)->load());
+    engine.setOsc2Level(params.getRawParameterValue(Params::Osc2Level)->load());
     engine.setAmpEnvelope(
         params.getRawParameterValue(Params::AmpAttack)->load(),
         params.getRawParameterValue(Params::AmpDecay)->load(),

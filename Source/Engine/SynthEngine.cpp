@@ -3,7 +3,8 @@
 SynthEngine::SynthEngine()
 {
     synth.addSound(new SynthSound());
-    synth.addVoice(new SynthVoice());
+    for (int i = 0; i < 8; ++i)
+        synth.addVoice(new SynthVoice());
 }
 
 SynthEngine::~SynthEngine() {}
@@ -23,21 +24,39 @@ void SynthEngine::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffe
     synth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
 }
 
-void SynthEngine::setWaveform(int index)
+void SynthEngine::setOsc1Waveform(int index)
 {
     for (int i = 0; i < synth.getNumVoices(); ++i)
     {
         if (auto* v = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
-            v->setWaveform(static_cast<Oscillator::Waveform>(index));
+            v->setOsc1Waveform(static_cast<Oscillator::Waveform>(index));
     }
 }
 
-void SynthEngine::setOscLevel(float level)
+void SynthEngine::setOsc2Waveform(int index)
 {
     for (int i = 0; i < synth.getNumVoices(); ++i)
     {
         if (auto* v = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
-            v->setOscLevel(level);
+            v->setOsc2Waveform(static_cast<Oscillator::Waveform>(index));
+    }
+}
+
+void SynthEngine::setOsc1Level(float level)
+{
+    for (int i = 0; i < synth.getNumVoices(); ++i)
+    {
+        if (auto* v = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
+            v->setOsc1Level(level);
+    }
+}
+
+void SynthEngine::setOsc2Level(float level)
+{
+    for (int i = 0; i < synth.getNumVoices(); ++i)
+    {
+        if (auto* v = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
+            v->setOsc2Level(level);
     }
 }
 

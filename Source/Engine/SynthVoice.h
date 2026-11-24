@@ -14,12 +14,15 @@ public:
     void prepareToPlay(double sampleRate, int samplesPerBlock);
     void renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int startSample, int numSamples) override;
 
-    void setWaveform(Oscillator::Waveform w);
-    void setOscLevel(float level);
+    void setOsc1Waveform(Oscillator::Waveform w);
+    void setOsc2Waveform(Oscillator::Waveform w);
+    void setOsc1Level(float level);
+    void setOsc2Level(float level);
     void setAmpEnvelope(float attack, float decay, float sustain, float release);
 
 private:
-    Oscillator osc;
+    Oscillator osc1;
+    Oscillator osc2;
     Envelope env;
     double currentFreq = 440.0;
 };

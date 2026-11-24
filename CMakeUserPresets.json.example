@@ -25,12 +25,12 @@
       "inherits": "windows-release",
       "cacheVariables": {
         "CMAKE_GENERATOR": "Ninja",
-        "CMAKE_GENERATOR_PLATFORM": "x64",
         "CMAKE_C_COMPILER": "cl.exe",
         "CMAKE_CXX_COMPILER": "cl.exe"
       },
       "environment": {
-        "VCTargetsPath": "%ProgramFiles%\\Microsoft Visual Studio\\2022\\Community\\VC\\Auxiliary\\Build"
+        "VCTargetsPath": "%ProgramFiles%\\Microsoft Visual Studio\\2022\\Community\\VC\\Auxiliary\\Build",
+        "VSCMD_ARG_TGT_ARCH": "x64"
       }
     },
     {
@@ -39,9 +39,12 @@
       "inherits": "windows-debug",
       "cacheVariables": {
         "CMAKE_GENERATOR": "Ninja",
-        "CMAKE_GENERATOR_PLATFORM": "x64",
         "CMAKE_C_COMPILER": "cl.exe",
         "CMAKE_CXX_COMPILER": "cl.exe"
+      },
+      "environment": {
+        "VCTargetsPath": "%ProgramFiles%\\Microsoft Visual Studio\\2022\\Community\\VC\\Auxiliary\\Build",
+        "VSCMD_ARG_TGT_ARCH": "x64"
       }
     }
   ]

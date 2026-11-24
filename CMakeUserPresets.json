@@ -1,0 +1,51 @@
+{
+  "version": 3,
+  "configurePresets": [
+    {
+      "name": "linux-debug-gcc14",
+      "displayName": "Linux Debug GCC 14",
+      "inherits": "linux-debug",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "gcc-14",
+        "CMAKE_CXX_COMPILER": "g++-14"
+      }
+    },
+    {
+      "name": "linux-release-gcc14",
+      "displayName": "Linux Release GCC 14",
+      "inherits": "linux-release",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "gcc-14",
+        "CMAKE_CXX_COMPILER": "g++-14"
+      }
+    },
+    {
+      "name": "windows-release-vs2022",
+      "displayName": "Windows Release VS2022",
+      "inherits": "windows-release",
+      "cacheVariables": {
+        "CMAKE_GENERATOR": "Ninja",
+        "CMAKE_C_COMPILER": "cl.exe",
+        "CMAKE_CXX_COMPILER": "cl.exe"
+      },
+      "environment": {
+        "VCTargetsPath": "%ProgramFiles%\\Microsoft Visual Studio\\2022\\Community\\VC\\Auxiliary\\Build",
+        "VSCMD_ARG_TGT_ARCH": "x64"
+      }
+    },
+    {
+      "name": "windows-debug-vs2022",
+      "displayName": "Windows Debug VS2022",
+      "inherits": "windows-debug",
+      "cacheVariables": {
+        "CMAKE_GENERATOR": "Ninja",
+        "CMAKE_C_COMPILER": "cl.exe",
+        "CMAKE_CXX_COMPILER": "cl.exe"
+      },
+      "environment": {
+        "VCTargetsPath": "%ProgramFiles%\\Microsoft Visual Studio\\2022\\Community\\VC\\Auxiliary\\Build",
+        "VSCMD_ARG_TGT_ARCH": "x64"
+      }
+    }
+  ]
+}

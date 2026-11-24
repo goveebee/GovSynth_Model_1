@@ -29,7 +29,7 @@ juce_add_plugin(GovSynthModel1
     PLUGIN_CODE GovM
     FORMATS VST3 Standalone
     PRODUCT_NAME "GovSynthModel1"
-    COPY_PLUGIN_AFTER_BUILD TRUE
+    COPY_PLUGIN_AFTER_BUILD FALSE
 )
 
 if(MSVC)

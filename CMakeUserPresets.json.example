@@ -22,21 +22,21 @@
     {
       "name": "windows-release-vs2022",
       "displayName": "Windows Release VS2022",
-      "inherits": "windows-release",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "binaryDir": "${sourceDir}/build/windows-release-vs2022",
       "cacheVariables": {
-        "CMAKE_GENERATOR": "Visual Studio 17 2022",
-        "CMAKE_GENERATOR_PLATFORM": "x64",
-        "CMAKE_GENERATOR_TOOLSET": "host=x64"
+        "CMAKE_BUILD_TYPE": "Release"
       }
     },
     {
       "name": "windows-debug-vs2022",
       "displayName": "Windows Debug VS2022",
-      "inherits": "windows-debug",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "binaryDir": "${sourceDir}/build/windows-debug-vs2022",
       "cacheVariables": {
-        "CMAKE_GENERATOR": "Visual Studio 17 2022",
-        "CMAKE_GENERATOR_PLATFORM": "x64",
-        "CMAKE_GENERATOR_TOOLSET": "host=x64"
+        "CMAKE_BUILD_TYPE": "Debug"
       }
     }
   ]

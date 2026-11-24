@@ -18,73 +18,73 @@ GovSynthModel1AudioProcessorEditor::GovSynthModel1AudioProcessorEditor(GovSynthM
     osc2WaveLabel.setText("Osc 2 Wave", juce::dontSendNotification);
     addAndMakeVisible(osc2WaveLabel);
 
-    auto makeSlider = [&](juce::Slider& s, const juce::String& labelText) {
+    auto makeSlider = [&](juce::Slider& s) {
         s.setSliderStyle(juce::Slider::RotaryVerticalDrag);
         s.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 60, 20);
         addAndMakeVisible(s);
     };
 
-    makeSlider(osc1LevelSlider, "Osc 1 Level");
+    makeSlider(osc1LevelSlider);
     osc1LevelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, Params::Osc1Level, osc1LevelSlider);
     osc1LevelLabel.setText("Osc 1 Level", juce::dontSendNotification);
     addAndMakeVisible(osc1LevelLabel);
 
-    makeSlider(osc2LevelSlider, "Osc 2 Level");
+    makeSlider(osc2LevelSlider);
     osc2LevelAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, Params::Osc2Level, osc2LevelSlider);
     osc2LevelLabel.setText("Osc 2 Level", juce::dontSendNotification);
     addAndMakeVisible(osc2LevelLabel);
 
-    makeSlider(osc1OctaveSlider, "Osc 1 Oct");
+    makeSlider(osc1OctaveSlider);
     osc1OctaveAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, Params::Osc1Octave, osc1OctaveSlider);
     osc1OctaveLabel.setText("Osc 1 Oct", juce::dontSendNotification);
     addAndMakeVisible(osc1OctaveLabel);
 
-    makeSlider(osc1SemitoneSlider, "Osc 1 Semi");
+    makeSlider(osc1SemitoneSlider);
     osc1SemitoneAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, Params::Osc1Semitone, osc1SemitoneSlider);
     osc1SemitoneLabel.setText("Osc 1 Semi", juce::dontSendNotification);
     addAndMakeVisible(osc1SemitoneLabel);
 
-    makeSlider(osc1DetuneSlider, "Osc 1 Detune");
+    makeSlider(osc1DetuneSlider);
     osc1DetuneAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, Params::Osc1Detune, osc1DetuneSlider);
     osc1DetuneLabel.setText("Osc 1 Detune", juce::dontSendNotification);
     addAndMakeVisible(osc1DetuneLabel);
 
-    makeSlider(osc2OctaveSlider, "Osc 2 Oct");
+    makeSlider(osc2OctaveSlider);
     osc2OctaveAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, Params::Osc2Octave, osc2OctaveSlider);
     osc2OctaveLabel.setText("Osc 2 Oct", juce::dontSendNotification);
     addAndMakeVisible(osc2OctaveLabel);
 
-    makeSlider(osc2SemitoneSlider, "Osc 2 Semi");
+    makeSlider(osc2SemitoneSlider);
     osc2SemitoneAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, Params::Osc2Semitone, osc2SemitoneSlider);
     osc2SemitoneLabel.setText("Osc 2 Semi", juce::dontSendNotification);
     addAndMakeVisible(osc2SemitoneLabel);
 
-    makeSlider(osc2DetuneSlider, "Osc 2 Detune");
+    makeSlider(osc2DetuneSlider);
     osc2DetuneAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, Params::Osc2Detune, osc2DetuneSlider);
     osc2DetuneLabel.setText("Osc 2 Detune", juce::dontSendNotification);
     addAndMakeVisible(osc2DetuneLabel);
 
-    makeSlider(ampAttackSlider, "Amp Attack");
+    makeSlider(ampAttackSlider);
     ampAttackAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, Params::AmpAttack, ampAttackSlider);
     ampAttackLabel.setText("Amp Attack", juce::dontSendNotification);
     addAndMakeVisible(ampAttackLabel);
 
-    makeSlider(ampDecaySlider, "Amp Decay");
+    makeSlider(ampDecaySlider);
     ampDecayAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, Params::AmpDecay, ampDecaySlider);
     ampDecayLabel.setText("Amp Decay", juce::dontSendNotification);
     addAndMakeVisible(ampDecayLabel);
 
-    makeSlider(ampSustainSlider, "Amp Sustain");
+    makeSlider(ampSustainSlider);
     ampSustainAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, Params::AmpSustain, ampSustainSlider);
     ampSustainLabel.setText("Amp Sustain", juce::dontSendNotification);
     addAndMakeVisible(ampSustainLabel);
 
-    makeSlider(ampReleaseSlider, "Amp Release");
+    makeSlider(ampReleaseSlider);
     ampReleaseAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, Params::AmpRelease, ampReleaseSlider);
     ampReleaseLabel.setText("Amp Release", juce::dontSendNotification);
     addAndMakeVisible(ampReleaseLabel);
 
-    makeSlider(masterVolumeSlider, "Master Vol");
+    makeSlider(masterVolumeSlider);
     masterVolumeAttachment = std::make_unique<juce::AudioProcessorValueTreeState::SliderAttachment>(apvts, Params::MasterVolume, masterVolumeSlider);
     masterVolumeLabel.setText("Master Vol", juce::dontSendNotification);
     addAndMakeVisible(masterVolumeLabel);

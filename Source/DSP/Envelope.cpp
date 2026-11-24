@@ -13,9 +13,9 @@ void Envelope::setParameters(float a, float d, float s, float r)
     decay = d;
     sustain = s;
     release = r;
-    if (attack > 0.0f) attackInc = 1.0f / (attack * sampleRate);
-    if (decay > 0.0f) decayInc = (1.0f - sustain) / (decay * sampleRate);
-    if (release > 0.0f) releaseInc = level / (release * sampleRate);
+    if (attack > 0.0f) attackInc = static_cast<float>(1.0 / (attack * sampleRate));
+    if (decay > 0.0f) decayInc = static_cast<float>((1.0f - sustain) / (decay * sampleRate));
+    if (release > 0.0f) releaseInc = static_cast<float>(1.0 / (release * sampleRate));
 }
 
 void Envelope::noteOn()

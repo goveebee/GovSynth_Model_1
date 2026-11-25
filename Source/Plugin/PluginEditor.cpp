@@ -6,18 +6,61 @@ GovSynthModel1AudioProcessorEditor::GovSynthModel1AudioProcessorEditor(GovSynthM
 {
     auto& apvts = processor.getAPVTS();
 
-    osc1WaveBox.setTextWhenNothingSelected("Osc 1 Wave");
-    addAndMakeVisible(osc1WaveBox);
-    osc1WaveAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(apvts, Params::Osc1Wave, osc1WaveBox);
+    // Waveform radio buttons
+    osc1WaveGroup.addButtonToGroup(&osc1SineButton);
+    osc1WaveGroup.addButtonToGroup(&osc1TriangleButton);
+    osc1WaveGroup.addButtonToGroup(&osc1SawButton);
+    osc1SineButton.setButtonText("Sine");
+    osc1TriangleButton.setButtonText("Triangle");
+    osc1SawButton.setButtonText("Saw");
+    addAndMakeVisible(osc1SineButton);
+    addAndMakeVisible(osc1TriangleButton);
+    addAndMakeVisible(osc1SawButton);
     osc1WaveLabel.setText("Osc 1 Wave", juce::dontSendNotification);
     addAndMakeVisible(osc1WaveLabel);
 
-    osc2WaveBox.setTextWhenNothingSelected("Osc 2 Wave");
-    addAndMakeVisible(osc2WaveBox);
-    osc2WaveAttachment = std::make_unique<juce::AudioProcessorValueTreeState::ComboBoxAttachment>(apvts, Params::Osc2Wave, osc2WaveBox);
+    osc2WaveGroup.addButtonToGroup(&osc2SineButton);
+    osc2WaveGroup.addButtonToGroup(&osc2TriangleButton);
+    osc2WaveGroup.addButtonToGroup(&osc2SawButton);
+    osc2SineButton.setButtonText("Sine");
+    osc2TriangleButton.setButtonText("Triangle");
+    osc2SawButton.setButtonText("Saw");
+    addAndMakeVisible(osc2SineButton);
+    addAndMakeVisible(osc2TriangleButton);
+    addAndMakeVisible(osc2SawButton);
     osc2WaveLabel.setText("Osc 2 Wave", juce::dontSendNotification);
     addAndMakeVisible(osc2WaveLabel);
 
+    // Sync radio buttons with parameters
+    auto syncWave = [&](juce::ToggleButton& b0, juce::ToggleButton& b1, juce::ToggleButton& b2, const juce::String& paramId) {
+        auto* param = apvts.getParameter(paramId);
+        int idx = static_cast<int>(param->getValue() * 2.0f); // 0..2
+        if (idx < 0) idx = 0;
+        if (idx > 2) idx = 2;
+        b0.setToggleState(idx == 0, juce::dontSendNotification);
+        b1.setToggleState(idx == 1, juce::dontSendNotification);
+        b2.setToggleState(idx == 2, juce::dontSendNotification);
+    };
+    syncWave(osc1SineButton, osc1TriangleButton, osc1SawButton, Params::Osc1Wave);
+    syncWave(osc2SineButton, osc2TriangleButton, osc2SawButton, Params::Osc2Wave);
+
+    auto bindWave = [&](juce::ToggleButton& b0, juce::ToggleButton& b1, juce::ToggleButton& b2, const juce::String& paramId) {
+        auto update = [&]() {
+            int idx = b0.getToggleState() ? 0 : b1.getToggleState() ? 1 : 2;
+            if (auto* p = apvts.getParameter(paramId))
+                p->setValueNotifyingHost(idx / 2.0f);
+        };
+        b0.onClick = update;
+        b1.onClick = update;
+        b2.onClick = update;
+    };
+    bindWave(osc1SineButton, osc1TriangleButton, osc1SawButton, Params::Osc1Wave);
+    bindWave(osc2SineButton, osc2TriangleButton, osc2SawButton, Params::Osc2Wave);
+
+    apvts.addParameterListener(Params::Osc1Wave, this);
+    apvts.addParameterListener(Params::Osc2Wave, this);
+
+    // Sliders
     auto makeSlider = [&](juce::Slider& s) {
         s.setSliderStyle(juce::Slider::RotaryVerticalDrag);
         s.setTextBoxStyle(juce::Slider::TextBoxBelow, false, 60, 20);
@@ -92,7 +135,31 @@ GovSynthModel1AudioProcessorEditor::GovSynthModel1AudioProcessorEditor(GovSynthM
     setSize(1000, 700);
 }
 
-GovSynthModel1AudioProcessorEditor::~GovSynthModel1AudioProcessorEditor() {}
+GovSynthModel1AudioProcessorEditor::~GovSynthModel1AudioProcessorEditor() 
+{
+    auto& apvts = processor.getAPVTS();
+    apvts.removeParameterListener(Params::Osc1Wave, this);
+    apvts.removeParameterListener(Params::Osc2Wave, this);
+}
+
+void GovSynthModel1AudioProcessorEditor::parameterChanged(const juce::String& parameterID, float newValue)
+{
+    int idx = static_cast<int>(newValue * 2.0f);
+    if (idx < 0) idx = 0;
+    if (idx > 2) idx = 2;
+    if (parameterID == Params::Osc1Wave)
+    {
+        osc1SineButton.setToggleState(idx == 0, juce::dontSendNotification);
+        osc1TriangleButton.setToggleState(idx == 1, juce::dontSendNotification);
+        osc1SawButton.setToggleState(idx == 2, juce::dontSendNotification);
+    }
+    else if (parameterID == Params::Osc2Wave)
+    {
+        osc2SineButton.setToggleState(idx == 0, juce::dontSendNotification);
+        osc2TriangleButton.setToggleState(idx == 1, juce::dontSendNotification);
+        osc2SawButton.setToggleState(idx == 2, juce::dontSendNotification);
+    }
+}
 
 void GovSynthModel1AudioProcessorEditor::paint(juce::Graphics& g)
 {
@@ -105,9 +172,24 @@ void GovSynthModel1AudioProcessorEditor::paint(juce::Graphics& g)
 void GovSynthModel1AudioProcessorEditor::resized()
 {
     auto area = getLocalBounds().reduced(20);
-    auto top = area.removeFromTop(40);
-    osc1WaveBox.setBounds(top.removeFromLeft(200));
-    osc2WaveBox.setBounds(top.removeFromLeft(200));
+
+    // Waveform radio buttons
+    auto waveArea = area.removeFromTop(80);
+    auto osc1Area = waveArea.removeFromLeft(waveArea.getWidth() / 2);
+    osc1WaveLabel.setBounds(osc1Area.removeFromTop(20));
+    auto btnArea1 = osc1Area.reduced(0, 0);
+    int btnW = btnArea1.getWidth() / 3;
+    osc1SineButton.setBounds(btnArea1.removeFromLeft(btnW).reduced(5));
+    osc1TriangleButton.setBounds(btnArea1.removeFromLeft(btnW).reduced(5));
+    osc1SawButton.setBounds(btnArea1.removeFromLeft(btnW).reduced(5));
+
+    auto osc2Area = waveArea;
+    osc2WaveLabel.setBounds(osc2Area.removeFromTop(20));
+    auto btnArea2 = osc2Area.reduced(0, 0);
+    int btnW2 = btnArea2.getWidth() / 3;
+    osc2SineButton.setBounds(btnArea2.removeFromLeft(btnW2).reduced(5));
+    osc2TriangleButton.setBounds(btnArea2.removeFromLeft(btnW2).reduced(5));
+    osc2SawButton.setBounds(btnArea2.removeFromLeft(btnW2).reduced(5));
 
     auto row1 = area.removeFromTop(180);
     auto makeCol = [&](auto& slider, auto& label) {

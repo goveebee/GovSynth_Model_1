@@ -1,7 +1,8 @@
 #pragma once
 #include "PluginProcessor.h"
 
-class GovSynthModel1AudioProcessorEditor : public juce::AudioProcessorEditor
+class GovSynthModel1AudioProcessorEditor : public juce::AudioProcessorEditor,
+                                         public juce::AudioProcessorValueTreeState::Listener
 {
 public:
     explicit GovSynthModel1AudioProcessorEditor(GovSynthModel1AudioProcessor&);
@@ -9,12 +10,15 @@ public:
 
     void paint(juce::Graphics&) override;
     void resized() override;
+    void parameterChanged(const juce::String& parameterID, float newValue) override;
 
 private:
     GovSynthModel1AudioProcessor& processor;
 
-    juce::ComboBox osc1WaveBox;
-    juce::ComboBox osc2WaveBox;
+    juce::ToggleButton osc1SineButton, osc1TriangleButton, osc1SawButton;
+    juce::ToggleButton osc2SineButton, osc2TriangleButton, osc2SawButton;
+    juce::ButtonGroup osc1WaveGroup, osc2WaveGroup;
+
     juce::Slider osc1LevelSlider;
     juce::Slider osc2LevelSlider;
     juce::Slider osc1OctaveSlider;
@@ -45,8 +49,6 @@ private:
     juce::Label ampReleaseLabel;
     juce::Label masterVolumeLabel;
 
-    std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> osc1WaveAttachment;
-    std::unique_ptr<juce::AudioProcessorValueTreeState::ComboBoxAttachment> osc2WaveAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> osc1LevelAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> osc2LevelAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> osc1OctaveAttachment;

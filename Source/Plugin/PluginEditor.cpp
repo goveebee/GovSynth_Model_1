@@ -7,9 +7,9 @@ GovSynthModel1AudioProcessorEditor::GovSynthModel1AudioProcessorEditor(GovSynthM
     auto& apvts = processor.getAPVTS();
 
     // Waveform radio buttons
-    osc1WaveGroup.addButtonToGroup(&osc1SineButton);
-    osc1WaveGroup.addButtonToGroup(&osc1TriangleButton);
-    osc1WaveGroup.addButtonToGroup(&osc1SawButton);
+    osc1SineButton.setRadioGroupId(1);
+    osc1TriangleButton.setRadioGroupId(1);
+    osc1SawButton.setRadioGroupId(1);
     osc1SineButton.setButtonText("Sine");
     osc1TriangleButton.setButtonText("Triangle");
     osc1SawButton.setButtonText("Saw");
@@ -19,9 +19,9 @@ GovSynthModel1AudioProcessorEditor::GovSynthModel1AudioProcessorEditor(GovSynthM
     osc1WaveLabel.setText("Osc 1 Wave", juce::dontSendNotification);
     addAndMakeVisible(osc1WaveLabel);
 
-    osc2WaveGroup.addButtonToGroup(&osc2SineButton);
-    osc2WaveGroup.addButtonToGroup(&osc2TriangleButton);
-    osc2WaveGroup.addButtonToGroup(&osc2SawButton);
+    osc2SineButton.setRadioGroupId(2);
+    osc2TriangleButton.setRadioGroupId(2);
+    osc2SawButton.setRadioGroupId(2);
     osc2SineButton.setButtonText("Sine");
     osc2TriangleButton.setButtonText("Triangle");
     osc2SawButton.setButtonText("Saw");

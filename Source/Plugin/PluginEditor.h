@@ -17,7 +17,6 @@ private:
 
     juce::ToggleButton osc1SineButton, osc1TriangleButton, osc1SawButton;
     juce::ToggleButton osc2SineButton, osc2TriangleButton, osc2SawButton;
-    juce::ButtonGroup osc1WaveGroup, osc2WaveGroup;
 
     juce::Slider osc1LevelSlider;
     juce::Slider osc2LevelSlider;

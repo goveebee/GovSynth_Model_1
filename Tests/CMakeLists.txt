@@ -1,2 +1,5 @@
-add_executable(EmilSynthTests TestMain.cpp)
-target_link_libraries(EmilSynthTests PRIVATE juce::juce_audio_processors)
+add_executable(EmilSynthTests 
+    OscillatorTests.cpp
+    ../Source/DSP/Oscillator.cpp
+)
+target_include_directories(EmilSynthTests PRIVATE ../Source)

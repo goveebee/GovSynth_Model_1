@@ -1,5 +1,6 @@
 #include "Oscillator.h"
 
+
 Oscillator::Oscillator() {}
 
 void Oscillator::prepare(double sr)

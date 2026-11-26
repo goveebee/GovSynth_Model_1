@@ -73,11 +73,13 @@ void SynthVoice::renderNextBlock(juce::AudioBuffer<float>& outputBuffer, int sta
 
 void SynthVoice::setOsc1Waveform(Oscillator::Waveform w)
 {
+    juce::Logger::writeToLog("SynthVoice setOsc1Waveform w=" + juce::String(static_cast<int>(w)));
     osc1.setWaveform(w);
 }
 
 void SynthVoice::setOsc2Waveform(Oscillator::Waveform w)
 {
+    juce::Logger::writeToLog("SynthVoice setOsc2Waveform w=" + juce::String(static_cast<int>(w)));
     osc2.setWaveform(w);
 }
 

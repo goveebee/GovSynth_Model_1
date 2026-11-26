@@ -2,9 +2,11 @@
 #include "../Parameters/ParameterIDs.h"
 
 GovSynthModel1AudioProcessorEditor::GovSynthModel1AudioProcessorEditor(GovSynthModel1AudioProcessor& p)
-    : AudioProcessorEditor(&p), processor(p)
+    : AudioProcessorEditor(&p), processor(p), keyboardComponent(processor.getKeyboardState(), juce::KeyboardComponentBase::horizontalKeyboard)
 {
     auto& apvts = processor.getAPVTS();
+
+    addAndMakeVisible(keyboardComponent);
 
     // Waveform radio buttons
     osc1SineButton.setRadioGroupId(1);
@@ -34,7 +36,11 @@ GovSynthModel1AudioProcessorEditor::GovSynthModel1AudioProcessorEditor(GovSynthM
     // Sync radio buttons with parameters
     auto syncWave = [&](juce::ToggleButton& b0, juce::ToggleButton& b1, juce::ToggleButton& b2, const juce::String& paramId) {
         auto* param = apvts.getParameter(paramId);
-        int idx = static_cast<int>(param->getValue() * 2.0f); // 0..2
+        int idx = 0;
+        if (auto* choice = dynamic_cast<juce::AudioParameterChoice*>(param))
+            idx = choice->getIndex();
+        else
+            idx = static_cast<int>(param->getValue() * 2.0f);
         if (idx < 0) idx = 0;
         if (idx > 2) idx = 2;
         b0.setToggleState(idx == 0, juce::dontSendNotification);
@@ -44,15 +50,21 @@ GovSynthModel1AudioProcessorEditor::GovSynthModel1AudioProcessorEditor(GovSynthM
     syncWave(osc1SineButton, osc1TriangleButton, osc1SawButton, Params::Osc1Wave);
     syncWave(osc2SineButton, osc2TriangleButton, osc2SawButton, Params::Osc2Wave);
 
-    auto bindWave = [&](juce::ToggleButton& b0, juce::ToggleButton& b1, juce::ToggleButton& b2, const juce::String& paramId) {
-        auto update = [&]() {
-            int idx = b0.getToggleState() ? 0 : b1.getToggleState() ? 1 : 2;
-            if (auto* p = apvts.getParameter(paramId))
-                p->setValueNotifyingHost(idx / 2.0f);
+    auto bindWave = [&](juce::ToggleButton& b0, juce::ToggleButton& b1, juce::ToggleButton& b2, const juce::String paramId) {
+        auto setParam = [&apvts, paramId](int idx) {
+            juce::Logger::writeToLog("UI: setting parameter " + paramId + " to index " + juce::String(idx));
+            if (auto* p = apvts.getParameter(paramId)) {
+                // We have 3 choices (Sine, Triangle, Saw), so normalized value is idx / 2.0f
+                float normalizedValue = idx / 2.0f;
+                p->setValueNotifyingHost(normalizedValue);
+                juce::Logger::writeToLog("UI: setValueNotifyingHost called with " + juce::String(normalizedValue));
+            } else {
+                juce::Logger::writeToLog("UI: Parameter NOT FOUND: " + paramId);
+            }
         };
-        b0.onClick = update;
-        b1.onClick = update;
-        b2.onClick = update;
+        b0.onClick = [setParam]() { setParam(0); };
+        b1.onClick = [setParam]() { setParam(1); };
+        b2.onClick = [setParam]() { setParam(2); };
     };
     bindWave(osc1SineButton, osc1TriangleButton, osc1SawButton, Params::Osc1Wave);
     bindWave(osc2SineButton, osc2TriangleButton, osc2SawButton, Params::Osc2Wave);
@@ -144,7 +156,9 @@ GovSynthModel1AudioProcessorEditor::~GovSynthModel1AudioProcessorEditor()
 
 void GovSynthModel1AudioProcessorEditor::parameterChanged(const juce::String& parameterID, float newValue)
 {
-    int idx = static_cast<int>(newValue * 2.0f);
+    juce::Logger::writeToLog("Editor parameterChanged id=" + parameterID + " newValue=" + juce::String(newValue));
+    // APVTS Listener delivers denormalised value for AudioParameterChoice, i.e. the index 0..2
+    int idx = static_cast<int>(newValue);
     if (idx < 0) idx = 0;
     if (idx > 2) idx = 2;
     if (parameterID == Params::Osc1Wave)
@@ -173,8 +187,12 @@ void GovSynthModel1AudioProcessorEditor::resized()
 {
     auto area = getLocalBounds().reduced(20);
 
+    // Keyboard at the bottom
+    keyboardComponent.setBounds(area.removeFromBottom(150));
+
     // Waveform radio buttons
     auto waveArea = area.removeFromTop(80);
+
     auto osc1Area = waveArea.removeFromLeft(waveArea.getWidth() / 2);
     osc1WaveLabel.setBounds(osc1Area.removeFromTop(20));
     auto btnArea1 = osc1Area.reduced(0, 0);
@@ -219,4 +237,15 @@ void GovSynthModel1AudioProcessorEditor::resized()
     makeCol2(ampSustainSlider, ampSustainLabel);
     makeCol2(ampReleaseSlider, ampReleaseLabel);
     makeCol2(masterVolumeSlider, masterVolumeLabel);
+}
+
+bool GovSynthModel1AudioProcessorEditor::keyPressed(const juce::KeyPress& key)
+{
+    if (key == juce::KeyPress::spaceKey)
+    {
+        processor.triggerTestNote(true);
+        juce::Timer::callAfterDelay(2000, [this]() { processor.triggerTestNote(false); });
+        return true;
+    }
+    return false;
 }

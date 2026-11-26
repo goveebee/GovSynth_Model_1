@@ -20,6 +20,17 @@
       }
     },
     {
+      "name": "linux-release-sles",
+      "displayName": "Linux Release SLES GCC14",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/linux-release-sles",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_CXX_COMPILER": "/usr/bin/g++-14",
+        "CMAKE_C_COMPILER": "/usr/bin/gcc-14"
+      }
+    },
+    {
       "name": "windows-debug",
       "displayName": "Windows Debug",
       "generator": "Ninja",

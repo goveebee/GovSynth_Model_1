@@ -24,6 +24,8 @@ public:
     void setOsc2Semitone(int s);
     void setOsc2Detune(float c);
     void setAmpEnvelope(float attack, float decay, float sustain, float release);
+    void triggerNote(int noteNumber, bool on);
+
 
 private:
     juce::Synthesiser synth;

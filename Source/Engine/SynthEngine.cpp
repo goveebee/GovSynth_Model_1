@@ -26,6 +26,7 @@ void SynthEngine::processBlock(juce::AudioBuffer<float>& buffer, juce::MidiBuffe
 
 void SynthEngine::setOsc1Waveform(int index)
 {
+    juce::Logger::writeToLog("SynthEngine setOsc1Waveform index=" + juce::String(index));
     for (int i = 0; i < synth.getNumVoices(); ++i)
     {
         if (auto* v = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
@@ -35,6 +36,7 @@ void SynthEngine::setOsc1Waveform(int index)
 
 void SynthEngine::setOsc2Waveform(int index)
 {
+    juce::Logger::writeToLog("SynthEngine setOsc2Waveform index=" + juce::String(index));
     for (int i = 0; i < synth.getNumVoices(); ++i)
     {
         if (auto* v = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
@@ -98,4 +100,12 @@ void SynthEngine::setAmpEnvelope(float attack, float decay, float sustain, float
         if (auto* v = dynamic_cast<SynthVoice*>(synth.getVoice(i)))
             v->setAmpEnvelope(attack, decay, sustain, release);
     }
+}
+
+void SynthEngine::triggerNote(int noteNumber, bool on)
+{
+    if (on)
+        synth.noteOn(1, noteNumber, 0.8f);
+    else
+        synth.noteOff(1, noteNumber, 0.8f, true);
 }

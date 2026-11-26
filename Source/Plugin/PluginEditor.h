@@ -1,8 +1,9 @@
 #pragma once
 #include "PluginProcessor.h"
+#include <juce_audio_utils/juce_audio_utils.h>
 
 class GovSynthModel1AudioProcessorEditor : public juce::AudioProcessorEditor,
-                                         public juce::AudioProcessorValueTreeState::Listener
+                                          public juce::AudioProcessorValueTreeState::Listener
 {
 public:
     explicit GovSynthModel1AudioProcessorEditor(GovSynthModel1AudioProcessor&);
@@ -12,10 +13,15 @@ public:
     void resized() override;
     void parameterChanged(const juce::String& parameterID, float newValue) override;
 
+    bool keyPressed(const juce::KeyPress& key) override;
+
 private:
     GovSynthModel1AudioProcessor& processor;
 
+    juce::MidiKeyboardComponent keyboardComponent;
+
     juce::ToggleButton osc1SineButton, osc1TriangleButton, osc1SawButton;
+
     juce::ToggleButton osc2SineButton, osc2TriangleButton, osc2SawButton;
 
     juce::Slider osc1LevelSlider;
@@ -47,6 +53,8 @@ private:
     juce::Label ampSustainLabel;
     juce::Label ampReleaseLabel;
     juce::Label masterVolumeLabel;
+
+
 
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> osc1LevelAttachment;
     std::unique_ptr<juce::AudioProcessorValueTreeState::SliderAttachment> osc2LevelAttachment;
